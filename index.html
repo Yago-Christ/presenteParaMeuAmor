@@ -315,39 +315,51 @@
 
   /* GALLERY */
   .gallery{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.6rem;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.8rem 1.6rem;
     margin-top: 2rem;
   }
+  .photo-frame.note-frame{
+    flex-basis: 100%;
+    max-width: 190px;
+    margin: 0 auto;
+  }
   .photo-frame{
-    background: var(--ivory);
-    padding: 12px;
-    border-radius: 2px;
-    box-shadow: 0 12px 26px var(--shadow);
-    transform: rotate(var(--tilt, -2deg));
-    transition: transform .3s ease;
+    background: #FEFBF4;
+    flex: 0 1 clamp(96px, 26vw, 190px);
+    max-width: 190px;
+    padding: 14px 14px 34px;
+    border-radius: 3px;
+    box-shadow: 0 14px 28px var(--shadow), 0 2px 4px rgba(0,0,0,0.15);
+    transform: rotate(var(--tilt, -3deg));
+    transition: transform .3s ease, box-shadow .3s ease;
     position: relative;
   }
-  .photo-frame:nth-child(2n){ --tilt: 2.5deg; }
-  .photo-frame:nth-child(3n){ --tilt: -1.5deg; }
-  .photo-frame:hover{ transform: rotate(0) scale(1.04); z-index:5; }
+  .photo-frame::before{
+    /* washi tape holding the polaroid, alternates side per item */
+    content:'';
+    position:absolute;
+    top:-10px; left:50%;
+    width: 46px; height: 20px;
+    background: rgba(251,241,228,0.55);
+    border: 1px solid rgba(255,255,255,0.4);
+    transform: translateX(-50%) rotate(var(--tape-rot, -6deg));
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+  }
+  .photo-frame:nth-child(2n){ --tilt: 3deg; --tape-rot: 5deg; }
+  .photo-frame:nth-child(3n){ --tilt: -1.8deg; --tape-rot: -3deg; }
+  .photo-frame:hover{ transform: rotate(0) scale(1.05) translateY(-4px); box-shadow: 0 20px 40px var(--shadow), 0 2px 4px rgba(0,0,0,0.2); z-index:5; }
   .photo-frame img{
     width:100%;
     aspect-ratio: 1/1;
     object-fit: cover;
     display:block;
     background: #e9ddc8;
-  }
-  .photo-frame .caption{
-    position:absolute;
-    bottom: 8px; left:0; right:0;
-    text-align:center;
-    font-family:'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--ink);
-    font-size: 0.85rem;
-    opacity: 0.65;
+    filter: sepia(0.14) saturate(1.05) contrast(1.02);
+    box-shadow: inset 0 0 18px rgba(60,20,10,0.25);
   }
   .photo-frame img.missing{ display:none; }
   .placeholder-text{
@@ -364,6 +376,13 @@
     padding: 1rem;
   }
   .photo-frame.empty .placeholder-text{ display:flex; }
+  .photo-frame.note-frame{ padding: 14px; }
+  .photo-frame.note-frame .placeholder-text{
+    aspect-ratio: auto;
+    border: none;
+    padding: 1.4rem 0.6rem;
+    font-size: 1rem;
+  }
 
   footer{
     text-align:center;
@@ -560,6 +579,9 @@
       <div class="photo-frame">
         <img src="fotos/foto3.jpg" alt="nós dois" onerror="this.classList.add('missing'); this.parentElement.classList.add('empty')">
         <div class="placeholder-text">+ coloque aqui<br>fotos/foto3.jpg</div>
+      </div>
+      <div class="photo-frame empty note-frame">
+        <div class="placeholder-text">Futuramente haverá uma foto nossa aqui</div>
       </div>
     </div>
   </section>
